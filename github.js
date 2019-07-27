@@ -5,16 +5,25 @@ class GitHub {
   }
 
   async get(user) {
-    const promise = await fetch(
+    const userPromise = await fetch(
       `https://api.github.com/users/${user}?client_id=${
         this.clientID
       }&client_secret=${this.clientSecret}`
     );
 
-    const profile = await promise.json();
+    const profile = await userPromise.json();
+
+    const repoPromise = await fetch(
+      `https://api.github.com/users/${user}/repos?sort=created?client_id=${
+        this.clientID
+      }&client_secret=${this.clientSecret}`
+    );
+
+    const repos = await repoPromise.json();
 
     return {
-      profile
+      profile,
+      repos
     };
   }
 }
